@@ -1,0 +1,27 @@
+HSCanopy3m: bounds min (-1.62, -0.005, -1.62) max (1.62, 0.45, 1.62), colliders 2
+HSCanopy5m: bounds min (-2.62, -0.005, -2.62) max (2.62, 0.45, 2.62), colliders 2
+HSDrumSide3mFramed: bounds min (0.458, 0, -1.105) max (0.975, 3, 1.105), colliders 8
+HSDrumSide3mGlass: bounds min (0.458, 0, -1.105) max (0.975, 3, 1.105), colliders 8
+HSDrumSide3mSolid: bounds min (0.38, 0, -1.146) max (0.939, 3, 1.146), colliders 8
+HSDrumSide5mFramed: bounds min (0.458, 0, -1.812) max (1.268, 3, 1.812), colliders 8
+HSDrumSide5mGlass: bounds min (0.458, 0, -1.812) max (1.268, 3, 1.812), colliders 8
+HSDrumSide5mSolid: bounds min (0.38, 0, -1.853) max (1.232, 3, 1.853), colliders 8
+HSDrumWall3mGlass: bounds min (0.458, 0, -1.105) max (0.975, 1, 1.105), colliders 8
+HSDrumWall3mSolid: bounds min (0.38, 0, -1.146) max (0.939, 1, 1.146), colliders 8
+HSDrumWall5mGlass: bounds min (0.458, 0, -1.812) max (1.268, 1, 1.812), colliders 8
+HSDrumWall5mSolid: bounds min (0.38, 0, -1.853) max (1.232, 1, 1.853), colliders 8
+HSFloorMat3m: bounds min (-1.54, 0, -1.54) max (1.54, 1.006, 1.54), colliders 1
+HSFloorMat5m: bounds min (-2.54, 0, -2.54) max (2.54, 1.006, 2.54), colliders 1
+HSLeafFramedDark: bounds min (-0.5, 0, -0.025) max (0.5, 3, 0.025), colliders 1
+HSLeafFramedSilver: bounds min (-0.5, 0, -0.025) max (0.5, 3, 0.025), colliders 1
+HSLeafFrameless: bounds min (-0.5, 0, -0.018) max (0.5, 3, 0.018), colliders 1
+HSPost2: bounds min (-0.5, 0, -0.11) max (0.5, 3, 0.11), colliders 3
+HSPost4: bounds min (-0.5, 0, -0.5) max (0.5, 3, 0.5), colliders 5
+HSPostPlain: bounds min (-0.11, 0, -0.11) max (0.11, 3, 0.11), colliders 1
+HSRotor3_3m: bounds min (-1.286, 0, -1.47) max (1.286, 3, 0.757), colliders 4
+HSRotor3_5m: bounds min (-2.152, 0, -2.47) max (2.152, 3, 1.257), colliders 4
+HSSlideHeader: bounds min (-0.5, 0, -0.12) max (0.5, 0.4, 0.13), colliders 1
+HSSlideHeaderEnd: bounds min (-0.5, -0.005, -0.125) max (0.5, 0.405, 0.13), colliders 1
+HSSlideHeaderSensor: bounds min (-0.5, 0, -0.12) max (0.5, 0.4, 0.177), colliders 1
+Bundle: C:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\Resources\HSDoors.unity3d (231301 bytes, 25 prefabs)
+DONE

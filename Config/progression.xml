@@ -1,0 +1,8 @@
+<configs>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingElectrician']/display_entry[@unlock_level='25']">
+		<unlock_entry item="hsdoorsTool,hsdoorsPanel,hsdoorsLeafFramedSilver,hsdoorsLeafFramedDark,hsdoorsLeafFrameless,hsdoorsPostPlain,hsdoorsPost2,hsdoorsPost4,hsdoorsRotor3_3m,hsdoorsRotor3_5m,hsdoorsDrumSide3mFramed,hsdoorsDrumSide3mGlass,hsdoorsDrumSide3mSolid,hsdoorsDrumSide5mFramed,hsdoorsDrumSide5mGlass,hsdoorsDrumSide5mSolid,hsdoorsDrumWall3mGlass,hsdoorsDrumWall3mSolid,hsdoorsDrumWall5mGlass,hsdoorsDrumWall5mSolid,hsdoorsDrumWallGlass,hsdoorsDrumWallSolid,hsdoorsDrumWallSolidThick,hsdoorsCanopy3m,hsdoorsCanopy5m,hsdoorsFloorMat3m,hsdoorsFloorMat5m,hsdoorsSlideHeader,hsdoorsSlideHeaderSensor,hsdoorsSlideHeaderEnd" unlock_tier="1"/>
+	</append>
+	<append xpath="/progression/crafting_skills/crafting_skill[@name='craftingElectrician']/effect_group">
+		<passive_effect name="RecipeTagUnlocked" operation="base_set" level="25,100" value="1" tags="hsdoorsTool,hsdoorsPanel,hsdoorsLeafFramedSilver,hsdoorsLeafFramedDark,hsdoorsLeafFrameless,hsdoorsPostPlain,hsdoorsPost2,hsdoorsPost4,hsdoorsRotor3_3m,hsdoorsRotor3_5m,hsdoorsDrumSide3mFramed,hsdoorsDrumSide3mGlass,hsdoorsDrumSide3mSolid,hsdoorsDrumSide5mFramed,hsdoorsDrumSide5mGlass,hsdoorsDrumSide5mSolid,hsdoorsDrumWall3mGlass,hsdoorsDrumWall3mSolid,hsdoorsDrumWall5mGlass,hsdoorsDrumWall5mSolid,hsdoorsDrumWallGlass,hsdoorsDrumWallSolid,hsdoorsDrumWallSolidThick,hsdoorsCanopy3m,hsdoorsCanopy5m,hsdoorsFloorMat3m,hsdoorsFloorMat5m,hsdoorsSlideHeader,hsdoorsSlideHeaderSensor,hsdoorsSlideHeaderEnd"/>
+	</append>
+</configs>

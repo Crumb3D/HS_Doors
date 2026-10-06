@@ -1,0 +1,275 @@
+<configs>
+	<append xpath="/blocks">
+
+		<block name="hsdoorsPanel">
+			<property name="CreativeMode" value="Player" />
+			<property name="Class" value="HSDoorsPanel, HSDoors" />
+			<property name="RequiredPower" value="1" />
+			<property name="UnlockedBy" value="craftingElectrician" />
+			<property name="DisplayType" value="blockElectrical" />
+			<property name="CustomIcon" value="elevatorOutsideButtonPanel" />
+			<property name="CustomIconTint" value="7ec8e3" />
+			<property name="DescriptionKey" value="hsdoorsPanelDesc" />
+			<property name="Material" value="Mmetal_weak" />
+			<property name="Shape" value="ModelEntity" />
+			<property name="Model" value="@:Entities/Doors/elevatorDoor/elevatorOutsideButtonPanelPrefab.prefab" />
+			<property name="ModelOffset" value="0,0,-0.5" />
+			<property name="MultiBlockDim" value="1,2,1" />
+			<property name="ImposterDontBlock" value="true" />
+			<property name="WaterFlow" value="permitted" />
+			<property name="Place" value="TowardsPlacerInverted" />
+			<property name="Collide" value="movement,melee,bullet,arrow,rocket" />
+			<property name="CanPickup" value="false" />
+			<property name="EconomicValue" value="60" />
+			<property name="MaxDamage" value="3000" />
+			<property class="RepairItems">
+				<property name="resourceForgedIron" value="2" />
+			</property>
+			<drop event="Harvest" name="terrStone" count="0" tool_category="Disassemble" />
+			<drop event="Harvest" name="resourceElectricParts" count="1" tag="salvageHarvest" />
+			<drop event="Destroy" name="resourceScrapIron" count="3,6" />
+			<drop event="Fall" name="scrapMetalPile" count="1" prob="0.75" stick_chance="1" />
+			<property name="SortOrder1" value="B157" />
+			<property name="SortOrder2" value="0100" />
+			<property name="Group" value="Science,TCScience" />
+			<property name="Tags" value="electricianSkill" />
+			<property name="FilterTags" value="MC_playerBlocks,SC_electrical" />
+		</block>
+
+		<block name="hsdoorsGlassMaster">
+			<property name="CreativeMode" value="Dev" />
+			<property name="DescriptionKey" value="hsdoorsGlassDesc" />
+			<property name="Material" value="Mglass" />
+			<property name="Shape" value="ModelEntity" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSLeafFramedSilver" />
+			<property name="Mesh" value="transparent" />
+			<property name="ModelOffset" value="0,0,0" />
+			<property name="LightOpacity" value="1" />
+			<property name="Place" value="TowardsPlacerInverted" />
+			<property name="Collide" value="movement,melee,bullet,arrow,rocket" />
+			<property name="StabilitySupport" value="false" />
+			<property name="CanPickup" value="false" />
+			<property name="EconomicValue" value="20" />
+			<property name="MaxDamage" value="500" />
+			<property name="UnlockedBy" value="craftingElectrician" />
+			<drop event="Destroy" name="resourceBrokenGlass" count="1,3" />
+			<property name="SortOrder1" value="B157" />
+			<property name="Group" value="Science,TCScience,Building" />
+			<property name="FilterTags" value="MC_building,SC_windows" />
+		</block>
+
+		<block name="hsdoorsLeafFramedSilver">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSLeafFramedSilver" />
+			<property name="MultiBlockDim" value="1,3,1" />
+			<property name="SortOrder2" value="0101" />
+		</block>
+		<block name="hsdoorsLeafFramedDark">
+			<property name="Extends" value="hsdoorsLeafFramedSilver" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSLeafFramedDark" />
+			<property name="SortOrder2" value="0102" />
+		</block>
+		<block name="hsdoorsLeafFrameless">
+			<property name="Extends" value="hsdoorsLeafFramedSilver" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSLeafFrameless" />
+			<property name="SortOrder2" value="0103" />
+		</block>
+		<block name="hsdoorsPostPlain">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Material" value="Mmetal_weak" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSPostPlain" />
+			<property name="MultiBlockDim" value="1,3,1" />
+			<property name="SortOrder2" value="0104" />
+		</block>
+		<block name="hsdoorsPost2">
+			<property name="Extends" value="hsdoorsPostPlain" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSPost2" />
+			<property name="SortOrder2" value="0105" />
+		</block>
+		<block name="hsdoorsPost4">
+			<property name="Extends" value="hsdoorsPostPlain" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSPost4" />
+			<property name="SortOrder2" value="0106" />
+		</block>
+		<block name="hsdoorsRotor3_3m">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSRotor3_3m" />
+			<property name="MultiBlockDim" value="3,3,3" />
+			<property name="SortOrder2" value="0107" />
+		</block>
+		<block name="hsdoorsRotor3_5m">
+			<property name="Extends" value="hsdoorsRotor3_3m" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSRotor3_5m" />
+			<property name="MultiBlockDim" value="5,3,5" />
+			<property name="SortOrder2" value="0108" />
+		</block>
+		<block name="hsdoorsDrumSide3mFramed">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumSide3mFramed" />
+			<property name="MultiBlockDim" value="3,3,1" />
+			<property name="SortOrder2" value="0109" />
+		</block>
+		<block name="hsdoorsDrumSide3mGlass">
+			<property name="Extends" value="hsdoorsDrumSide3mFramed" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumSide3mGlass" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumSide3mSolid,hsdoorsDrumSide3mFramed" />
+			<property name="SortOrder2" value="0110" />
+		</block>
+		<block name="hsdoorsDrumSide5mFramed">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumSide5mFramed" />
+			<property name="MultiBlockDim" value="5,3,1" />
+			<property name="SortOrder2" value="0111" />
+		</block>
+		<block name="hsdoorsDrumSide5mGlass">
+			<property name="Extends" value="hsdoorsDrumSide5mFramed" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumSide5mGlass" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumSide5mSolid,hsdoorsDrumSide5mFramed" />
+			<property name="SortOrder2" value="0112" />
+		</block>
+		<block name="hsdoorsDrumSide3mSolid">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Material" value="Msteel_shapes" />
+			<property name="Mesh" value="opaque" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumSide3mSolid" />
+			<property name="MultiBlockDim" value="3,3,1" />
+			<property name="SortOrder2" value="0120" />
+		</block>
+		<block name="hsdoorsDrumSide5mSolid">
+			<property name="Extends" value="hsdoorsDrumSide3mSolid" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumSide5mSolid" />
+			<property name="MultiBlockDim" value="5,3,1" />
+			<property name="SortOrder2" value="0121" />
+		</block>
+		<block name="hsdoorsDrumWall3mGlass">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="DescriptionKey" value="hsdoorsDrumWallGlassDesc" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumWall3mGlass" />
+			<property name="MultiBlockDim" value="3,1,1" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWall3mSolid" />
+			<property name="SortOrder2" value="0122" />
+		</block>
+		<block name="hsdoorsDrumWall5mGlass">
+			<property name="Extends" value="hsdoorsDrumWall3mGlass" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumWall5mGlass" />
+			<property name="MultiBlockDim" value="5,1,1" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWall5mSolid" />
+			<property name="SortOrder2" value="0123" />
+		</block>
+		<block name="hsdoorsDrumWall3mSolid">
+			<property name="Extends" value="hsdoorsDrumSide3mSolid" />
+			<property name="DescriptionKey" value="hsdoorsDrumWallSolidDesc" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumWall3mSolid" />
+			<property name="MultiBlockDim" value="3,1,1" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWall3mGlass" />
+			<property name="SortOrder2" value="0124" />
+		</block>
+		<block name="hsdoorsDrumWall5mSolid">
+			<property name="Extends" value="hsdoorsDrumSide5mSolid" />
+			<property name="DescriptionKey" value="hsdoorsDrumWallSolidDesc" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSDrumWall5mSolid" />
+			<property name="MultiBlockDim" value="5,1,1" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWall5mGlass" />
+			<property name="SortOrder2" value="0125" />
+		</block>
+		<block name="hsdoorsDrumWallSolid">
+			<property name="CreativeMode" value="Player" />
+			<property name="DescriptionKey" value="hsdoorsDrumWallSolidDesc" />
+			<property name="DisplayType" value="blockHardened" />
+			<property name="Material" value="Msteel_shapes" />
+			<property name="Shape" value="New" />
+			<property name="Model" value="@:Shapes/plate_corner_round.fbx" />
+			<property name="Texture" value="356" />
+			<property name="UiBackgroundTexture" value="356" />
+			<property name="UseGlobalUV" value="Local" />
+			<property name="Place" value="TowardsPlacerInverted" />
+			<property name="Collide" value="movement,melee,bullet,arrow,rocket" />
+			<property name="StabilitySupport" value="false" />
+			<property name="CanPickup" value="false" />
+			<property name="EconomicValue" value="20" />
+			<property name="MaxDamage" value="3000" />
+			<property name="UnlockedBy" value="craftingElectrician" />
+			<property class="RepairItems">
+				<property name="resourceForgedSteel" value="2" />
+			</property>
+			<drop event="Harvest" name="resourceScrapIron" count="4" tag="allHarvest,perkJunkMiner" />
+			<drop event="Destroy" count="0" />
+			<drop event="Fall" name="scrapMetalPile" count="1" prob="0.75" stick_chance="1" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWallSolidThick,hsdoorsDrumWallGlass" />
+			<property name="SortOrder1" value="B157" />
+			<property name="SortOrder2" value="0126" />
+			<property name="Group" value="Science,TCScience,Building" />
+			<property name="FilterTags" value="MC_building,SC_windows" />
+		</block>
+		<block name="hsdoorsDrumWallGlass">
+			<property name="Extends" value="glassBusinessPlateCurved" />
+			<property name="CreativeMode" value="Player" />
+			<property name="DescriptionKey" value="hsdoorsDrumWallGlassDesc" />
+			<property name="UnlockedBy" value="craftingElectrician" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWallSolid,hsdoorsDrumWallSolidThick" />
+			<property name="SortOrder1" value="B157" />
+			<property name="SortOrder2" value="0127" />
+			<property name="Group" value="Science,TCScience,Building" />
+			<property name="FilterTags" value="MC_building,SC_windows" />
+		</block>
+		<block name="hsdoorsDrumWallSolidThick">
+			<property name="Extends" value="hsdoorsDrumWallSolid" />
+			<property name="Model" value="@:Shapes/corner_round1m.fbx" />
+			<property name="PlaceAltBlockValue" value="hsdoorsDrumWallGlass,hsdoorsDrumWallSolid" />
+			<property name="SortOrder2" value="0128" />
+		</block>
+		<block name="hsdoorsCanopy3m">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Material" value="Mmetal_weak" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSCanopy3m" />
+			<property name="MultiBlockDim" value="3,1,3" />
+			<property name="SortOrder2" value="0113" />
+		</block>
+		<block name="hsdoorsCanopy5m">
+			<property name="Extends" value="hsdoorsCanopy3m" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSCanopy5m" />
+			<property name="MultiBlockDim" value="5,1,5" />
+			<property name="SortOrder2" value="0114" />
+		</block>
+		<block name="hsdoorsFloorMat3m">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Material" value="Mmetal_weak" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSFloorMat3m" />
+			<property name="MultiBlockDim" value="1,1,1" />
+			<property name="SortOrder2" value="0115" />
+		</block>
+		<block name="hsdoorsFloorMat5m">
+			<property name="Extends" value="hsdoorsFloorMat3m" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSFloorMat5m" />
+			<property name="SortOrder2" value="0116" />
+		</block>
+		<block name="hsdoorsSlideHeader">
+			<property name="Extends" value="hsdoorsGlassMaster" />
+			<property name="CreativeMode" value="Player" />
+			<property name="Material" value="Mmetal_weak" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSSlideHeader" />
+			<property name="MultiBlockDim" value="1,1,1" />
+			<property name="SortOrder2" value="0117" />
+		</block>
+		<block name="hsdoorsSlideHeaderSensor">
+			<property name="Extends" value="hsdoorsSlideHeader" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSSlideHeaderSensor" />
+			<property name="SortOrder2" value="0118" />
+		</block>
+		<block name="hsdoorsSlideHeaderEnd">
+			<property name="Extends" value="hsdoorsSlideHeader" />
+			<property name="Model" value="#@modfolder:Resources/HSDoors.unity3d?HSSlideHeaderEnd" />
+			<property name="SortOrder2" value="0119" />
+		</block>
+
+	</append>
+</configs>

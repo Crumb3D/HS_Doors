@@ -1,0 +1,26 @@
+HSLeafFramedSilver verts=48 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSLeafFramedSilver.fbx
+HSLeafFramedDark verts=48 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSLeafFramedDark.fbx
+HSLeafFrameless verts=56 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSLeafFrameless.fbx
+HSPostPlain verts=192 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSPostPlain.fbx
+HSPost2 verts=256 cols=3 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSPost2.fbx
+HSPost4 verts=320 cols=5 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSPost4.fbx
+HSRotor3_3m verts=312 cols=4 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSRotor3_3m.fbx
+HSRotor3_5m verts=312 cols=4 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSRotor3_5m.fbx
+HSDrumSide3mFramed verts=428 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumSide3mFramed.fbx
+HSDrumSide3mGlass verts=412 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumSide3mGlass.fbx
+HSDrumSide3mSolid verts=132 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumSide3mSolid.fbx
+HSDrumSide5mFramed verts=428 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumSide5mFramed.fbx
+HSDrumSide5mGlass verts=412 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumSide5mGlass.fbx
+HSDrumSide5mSolid verts=132 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumSide5mSolid.fbx
+HSDrumWall3mGlass verts=412 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumWall3mGlass.fbx
+HSDrumWall3mSolid verts=132 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumWall3mSolid.fbx
+HSDrumWall5mGlass verts=412 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumWall5mGlass.fbx
+HSDrumWall5mSolid verts=132 cols=8 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSDrumWall5mSolid.fbx
+HSCanopy3m verts=1032 cols=2 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSCanopy3m.fbx
+HSCanopy5m verts=1032 cols=2 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSCanopy5m.fbx
+HSFloorMat3m verts=524 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSFloorMat3m.fbx
+HSFloorMat5m verts=524 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSFloorMat5m.fbx
+HSSlideHeader verts=16 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSSlideHeader.fbx
+HSSlideHeaderSensor verts=32 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSSlideHeaderSensor.fbx
+HSSlideHeaderEnd verts=24 cols=1 -> c:\Users\Crumb\AppData\Roaming\7DaysToDie\Mods\HS_Doors\_unity\Assets\HSDoors\Models\HSSlideHeaderEnd.fbx
+DONE

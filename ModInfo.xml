@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xml>
+  <Name value="HSDoors" />
+  <DisplayName value="HS Doors" />
+  <Description value="Player-built automatic sliding doors and revolving doors. You place the glass and frames; the setup tool marks the moving parts and a panel. Admin: hsdoors" />
+  <Author value="Crumb" />
+  <Version value="1.0.0" />
+  <SkipWithAntiCheat value="true" />
+</xml>

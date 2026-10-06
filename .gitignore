@@ -1,0 +1,38 @@
+# Live world / door save
+HSDoors.json
+HSDoorsSettings.json
+
+# Local build paths
+Source/Directory.Build.props
+Source/obj/
+Source/bin/
+*.dll.new
+
+# Unity / Blender junk
+_unity/Library/
+_unity/Temp/
+_unity/Logs/
+_unity/obj/
+_unity/UserSettings/
+_unity/BundleOut/
+_unity/*.csproj
+_unity/*.sln
+_unity_editor/
+_blender/__pycache__/
+*.log
+
+# Local tooling
+API_NOTES.md
+.codegpt-game.json
+.vs/
+*.user
+*.suo
+
+# Packs
+*.rar
+HS_Doors-v*.zip
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,115 @@
+<configs>
+	<append xpath="/recipes">
+
+		<recipe name="hsdoorsPanel" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+			<ingredient name="resourceMechanicalParts" count="4"/>
+			<ingredient name="resourceElectricParts" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsTool" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+			<ingredient name="resourceMechanicalParts" count="2"/>
+			<ingredient name="resourceElectricParts" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsLeafFramedSilver" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="2"/>
+			<ingredient name="resourceBrokenGlass" count="8"/>
+		</recipe>
+		<recipe name="hsdoorsLeafFramedDark" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="2"/>
+			<ingredient name="resourceBrokenGlass" count="8"/>
+		</recipe>
+		<recipe name="hsdoorsLeafFrameless" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="10"/>
+		</recipe>
+		<recipe name="hsdoorsPostPlain" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsPost2" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="6"/>
+			<ingredient name="resourceBrokenGlass" count="12"/>
+		</recipe>
+		<recipe name="hsdoorsPost4" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="8"/>
+			<ingredient name="resourceBrokenGlass" count="20"/>
+		</recipe>
+		<recipe name="hsdoorsRotor3_3m" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="8"/>
+			<ingredient name="resourceBrokenGlass" count="24"/>
+			<ingredient name="resourceMechanicalParts" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsRotor3_5m" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="12"/>
+			<ingredient name="resourceBrokenGlass" count="36"/>
+			<ingredient name="resourceMechanicalParts" count="6"/>
+		</recipe>
+		<recipe name="hsdoorsDrumSide3mFramed" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="2"/>
+			<ingredient name="resourceBrokenGlass" count="12"/>
+		</recipe>
+		<recipe name="hsdoorsDrumSide3mGlass" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="12"/>
+		</recipe>
+		<recipe name="hsdoorsDrumSide5mFramed" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="3"/>
+			<ingredient name="resourceBrokenGlass" count="18"/>
+		</recipe>
+		<recipe name="hsdoorsDrumSide5mGlass" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="18"/>
+		</recipe>
+		<recipe name="hsdoorsDrumSide3mSolid" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="8"/>
+		</recipe>
+		<recipe name="hsdoorsDrumSide5mSolid" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="12"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWall3mGlass" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWall5mGlass" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="6"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWall3mSolid" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="3"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWall5mSolid" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWallGlass" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWallSolid" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsDrumWallSolidThick" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsCanopy3m" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+		</recipe>
+		<recipe name="hsdoorsCanopy5m" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="6"/>
+		</recipe>
+		<recipe name="hsdoorsFloorMat3m" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsFloorMat5m" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="3"/>
+		</recipe>
+		<recipe name="hsdoorsSlideHeader" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+			<ingredient name="resourceMechanicalParts" count="4"/>
+			<ingredient name="resourceElectricParts" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsSlideHeaderSensor" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+			<ingredient name="resourceMechanicalParts" count="4"/>
+			<ingredient name="resourceElectricParts" count="3"/>
+		</recipe>
+		<recipe name="hsdoorsSlideHeaderEnd" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+			<ingredient name="resourceMechanicalParts" count="4"/>
+		</recipe>
+
+	</append>
+</configs>

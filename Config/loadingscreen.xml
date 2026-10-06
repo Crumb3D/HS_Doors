@@ -1,0 +1,8 @@
+<configs>
+	<append xpath="/doc/tips">
+		<tip key="loadingTipHSDoorsSetup" />
+		<tip key="loadingTipHSDoorsSlide" />
+		<tip key="loadingTipHSDoorsRevolve" />
+		<tip key="loadingTipHSDoorsPower" />
+	</append>
+</configs>
