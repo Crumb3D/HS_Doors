@@ -298,10 +298,8 @@ public static class HSDoorsSetup
         var world = GameManager.Instance.World;
         if (player == null) player = world != null ? world.GetPrimaryPlayer() : null;
         if (player == null) return "No local player.";
-        var hit = player.HitInfo;
-        if (hit == null || !hit.bHitValid) return "Aim at a block first.";
-        pos = hit.hit.blockPos;
-        if (world.GetBlock(pos).isair) return "Aim at a block first.";
+        if (!ItemActionHSDoorsTool.TryAimedBuild(world, player != null ? player.HitInfo : null, player, out pos))
+            return "Aim at a block first.";
         return null;
     }
 }

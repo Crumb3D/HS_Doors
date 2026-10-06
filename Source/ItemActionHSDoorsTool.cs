@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.Scripting;
 
 [Preserve]
@@ -16,14 +17,67 @@ public class ItemActionHSDoorsTool : ItemAction
 
     public static bool IsBuildBlock(WorldRayHitInfo hit)
     {
-        if (hit == null || !hit.bHitValid) return false;
-        var world = GameManager.Instance.World;
+        Vector3i pos;
+        return TryAimedBuild(GameManager.Instance != null ? GameManager.Instance.World : null, hit, null, out pos);
+    }
+
+    public static bool IsBuildBlock(WorldRayHitInfo hit, EntityPlayerLocal player)
+    {
+        Vector3i pos;
+        return TryAimedBuild(GameManager.Instance != null ? GameManager.Instance.World : null, hit, player, out pos);
+    }
+
+    public static bool TryAimedBuild(World world, WorldRayHitInfo hit, EntityPlayerLocal player, out Vector3i pos)
+    {
+        pos = Vector3i.zero;
         if (world == null) return false;
-        var bv = world.GetBlock(hit.hit.blockPos);
+        if (hit != null && hit.bHitValid && IsBuildCell(world, hit.hit.blockPos, out pos))
+            return true;
+        Ray ray;
+        if (!TryLookRay(hit, player, out ray)) return false;
+        var last = new Vector3i(int.MinValue, 0, 0);
+        for (float t = 0.05f; t <= 12f; t += 0.08f)
+        {
+            var p = ray.origin + ray.direction * t;
+            var vi = new Vector3i(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.y), Mathf.FloorToInt(p.z));
+            if (vi.x == last.x && vi.y == last.y && vi.z == last.z) continue;
+            last = vi;
+            if (IsBuildCell(world, vi, out pos)) return true;
+        }
+        return false;
+    }
+
+    static bool IsBuildCell(World world, Vector3i cell, out Vector3i pos)
+    {
+        pos = cell;
+        var bv = world.GetBlock(cell);
         if (bv.isair) return false;
         var b = bv.Block;
         if (b == null || b.shape == null || b.shape.IsTerrain()) return false;
+        pos = HSDoorsCapture.ParentPos(cell, bv);
         return true;
+    }
+
+    static bool TryLookRay(WorldRayHitInfo hit, EntityPlayerLocal player, out Ray ray)
+    {
+        ray = default(Ray);
+        if (hit != null)
+        {
+            try
+            {
+                ray = hit.ray;
+                if (ray.direction.sqrMagnitude > 0.0001f) return true;
+            }
+            catch { }
+        }
+        if (player == null) return false;
+        try
+        {
+            ray = player.GetLookRay();
+            return ray.direction.sqrMagnitude > 0.0001f;
+        }
+        catch { }
+        return false;
     }
 
     public static void OpenRadial(EntityPlayerLocal player)

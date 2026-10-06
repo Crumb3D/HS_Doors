@@ -2,6 +2,8 @@
 
 You build automatic sliding doors and revolving doors. The mod captures the moving blocks and slides or rotates them. Drum glass, leaves, the operator header, and the 3-wing rotor are extra building blocks.
 
+**Version 1.0.1** — 7 Days to Die **3.2**. Same `HS_Doors` folder on the dedicated server and every client.
+
 Same idea as [HS Lift](https://github.com/Crumb3D/HS_Lift) and [HS Escalator](https://github.com/Crumb3D/HS_Escalator): you place the parts, the setup tool marks them, a wired panel runs them.
 
 ## Sliding door
@@ -37,3 +39,10 @@ powershell -File build_assets.ps1
 ```
 
 That writes `Resources/HSDoors.unity3d`. `_blender/` and `_unity/` are source; they do not need to ship in a release zip.
+
+## Changelog (v1.0.1)
+
+- Inventory icons for the Unity door pieces
+- Glass leaves are hittable, so the Door Setup Tool hold-E prompt shows when you aim at them
+- Dummy model on the hidden glass parent (fixes the XML load crash)
+- Door save no longer blows up on a Unity `Vector3` loop
