@@ -14,7 +14,6 @@ public class BlockHSDoorsPanel : BlockPowered
             var pos = HSDoorsCapture.ParentPos(_blockPos, _blockValue);
             var door = HSDoorsConfig.PanelOwner(pos);
             if (door == null) return new BlockActivationCommand[0];
-            HSDoorsConfig.Use(door);
             string run = door.WantedOn ? "hsdoorsStop" : "hsdoorsStart";
             string rev = "hsdoorsReverse";
             string safety = door.SafetyReverse ? "hsdoorsSafetyOff" : "hsdoorsSafetyOn";

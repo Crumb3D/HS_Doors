@@ -110,6 +110,38 @@
 			<ingredient name="resourceForgedIron" count="4"/>
 			<ingredient name="resourceMechanicalParts" count="4"/>
 		</recipe>
+		<recipe name="hsdoorsRailStraight" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="4"/>
+			<ingredient name="resourceForgedIron" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsRailStraightEnd" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="4"/>
+			<ingredient name="resourceForgedIron" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsRailStraightEndRight" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="4"/>
+			<ingredient name="resourceForgedIron" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsRailCorner" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="6"/>
+			<ingredient name="resourceForgedIron" count="3"/>
+		</recipe>
+		<recipe name="hsdoorsRailCornerEnd" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="6"/>
+			<ingredient name="resourceForgedIron" count="3"/>
+		</recipe>
+		<recipe name="hsdoorsRailCornerEndRight" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceBrokenGlass" count="6"/>
+			<ingredient name="resourceForgedIron" count="3"/>
+		</recipe>
+		<recipe name="hsdoorsRailCornerHandrail" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="2"/>
+		</recipe>
+		<recipe name="hsdoorsSlideHeader2" count="1" craft_area="workbench" tags="perkAdvancedEngineering,learnable">
+			<ingredient name="resourceForgedIron" count="6"/>
+			<ingredient name="resourceMechanicalParts" count="6"/>
+			<ingredient name="resourceElectricParts" count="3"/>
+		</recipe>
 
 	</append>
 </configs>

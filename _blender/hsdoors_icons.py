@@ -35,6 +35,14 @@ ICONS = [
     ("HSSlideHeader", "hsdoorsSlideHeader"),
     ("HSSlideHeaderSensor", "hsdoorsSlideHeaderSensor"),
     ("HSSlideHeaderEnd", "hsdoorsSlideHeaderEnd"),
+    ("HSSlideHeader2", "hsdoorsSlideHeader2"),
+    ("HSRailStraight", "hsdoorsRailStraight"),
+    ("HSRailStraightEnd", "hsdoorsRailStraightEnd"),
+    ("HSRailStraightEndRight", "hsdoorsRailStraightEndRight"),
+    ("HSRailCorner", "hsdoorsRailCorner"),
+    ("HSRailCornerEnd", "hsdoorsRailCornerEnd"),
+    ("HSRailCornerEndRight", "hsdoorsRailCornerEndRight"),
+    ("HSRailCornerHandrail", "hsdoorsRailCornerHandrail"),
 ]
 
 scene = bpy.context.scene

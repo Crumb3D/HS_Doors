@@ -43,6 +43,15 @@ Write-Host "Blender: $blender"
 & $blender --background --factory-startup --python $BlenderScript -- $Models
 if ($LASTEXITCODE -ne 0) { throw "Blender export failed ($LASTEXITCODE)" }
 
+$blend = Join-Path $Root "_blender\hsdoors_models.blend"
+$iconPy = Join-Path $Root "_blender\hsdoors_icons.py"
+$iconOut = Join-Path $Root "UIAtlases\ItemIconAtlas"
+if (Test-Path $blend) {
+    Write-Host "Icons: $iconOut"
+    & $blender --background $blend --python $iconPy -- $iconOut
+    if ($LASTEXITCODE -ne 0) { throw "Icon render failed ($LASTEXITCODE)" }
+}
+
 Write-Host "Unity: $UnityExe"
 & $UnityExe -batchmode -nographics -projectPath $UnityProj -executeMethod HSDoorsBuild.Build -quit -logFile $UnityLog
 if ($LASTEXITCODE -ne 0) { throw "Unity bundle build failed ($LASTEXITCODE). See $UnityLog" }

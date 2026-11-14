@@ -8,6 +8,7 @@ public class HSDoorsVisual
     readonly List<Transform> holders = new List<Transform>();
     readonly List<HSDoorsCell> cells = new List<HSDoorsCell>();
     readonly List<Vector3> rest = new List<Vector3>();
+    readonly List<GameObject> headers = new List<GameObject>();
     HSDoorsConfigData bound;
 
     public void Bind(HSDoorsConfigData d)
@@ -48,11 +49,12 @@ public class HSDoorsVisual
                 if (ic != null)
                 {
                     var worldPos = new Vector3(bound.OriginX + c.Dx, bound.OriginY + c.Dy, bound.OriginZ + c.Dz);
-                    var model = ic.CloneModel(world, bv.ToItemValue(), worldPos, holder.transform, _textureFullArray: HSDoorsConfig.FromLongs(c.Tex));
+                    var model = HSGameApi.CloneBlockModel(ic, world, bv, worldPos, holder.transform, HSDoorsConfig.FromLongs(c.Tex));
                     if (model != null)
                     {
-                        model.localPosition = Vector3.zero;
-                        model.localRotation = bv.Block.shape.GetRotation(bv);
+                        // Same spot the chunk uses for the placed block. Zeroing the clone
+                        // drops a ModelEntity onto the cell corner: half a block sideways and down.
+                        PlaceLikeBlock(model, bv);
                         foreach (var col in model.GetComponentsInChildren<Collider>(true)) col.enabled = false;
                         foreach (var mb in model.GetComponentsInChildren<MonoBehaviour>(true)) mb.enabled = false;
                         HideFocus(model);
@@ -78,8 +80,113 @@ public class HSDoorsVisual
                 bgo.AddComponent<BoxCollider>().size = b.size;
             }
         }
+        if (bound.IsSlide) AddHeaders();
         Apply();
         HSDoorsDebug.Verbose("Visual " + bound.DoorId + ": " + holders.Count + " cells");
+    }
+
+    // A short bar on the top of each leaf, in that leaf's own blocks. It stays
+    // over the opening while the leaves slide. About a third of the housing's height.
+    void AddHeaders()
+    {
+        if (GameManager.IsDedicatedServer || bound == null) return;
+        var best = new Dictionary<int, int>();
+        for (int i = 0; i < holders.Count; i++)
+        {
+            int along = bound.Axis == 0 ? cells[i].Dx : cells[i].Dz;
+            int depth = bound.Axis == 0 ? cells[i].Dz : cells[i].Dx;
+            int key = along * 64 + depth;
+            int have;
+            if (!best.TryGetValue(key, out have) || cells[i].Dy > cells[have].Dy)
+                best[key] = i;
+        }
+        foreach (var kv in best)
+            AttachHeader(holders[kv.Value]);
+    }
+
+    void AttachHeader(Transform holder)
+    {
+        Bounds leafB;
+        if (!TryBounds(holder, null, out leafB)) return;
+        var block = Block.GetBlockValue("hsdoorsSlideHeader");
+        if (block.isair || block.Block == null) return;
+        var shape = block.Block.shape as BlockShapeModelEntity;
+        if (shape == null || string.IsNullOrEmpty(shape.modelName)) return;
+        Color tint;
+        var go = GameObjectPool.Instance.GetObjectForType(shape.modelName, out tint);
+        if (go == null)
+        {
+            HSDoorsDebug.Warn("Door header model missing.");
+            return;
+        }
+        var t = go.transform;
+        t.SetParent(holder, false);
+        t.localPosition = Vector3.zero;
+        t.localScale = Vector3.one;
+        go.name = "HS_DoorHeader";
+        var spin = LeafSpin(holder, t);
+        t.rotation = spin;
+        t.localScale = new Vector3(1f, 1f / 3f, 1f);
+        foreach (var col in go.GetComponentsInChildren<Collider>(true)) col.enabled = false;
+        Bounds headB;
+        if (TryBounds(holder, t, out headB))
+        {
+            t.localPosition += new Vector3(
+                leafB.center.x - headB.center.x,
+                leafB.max.y - headB.max.y,
+                leafB.center.z - headB.center.z);
+        }
+        t.SetParent(Root.transform, true);
+        headers.Add(go);
+    }
+
+    static Quaternion LeafSpin(Transform holder, Transform header)
+    {
+        var renders = holder.GetComponentsInChildren<MeshRenderer>(true);
+        for (int i = 0; i < renders.Length; i++)
+        {
+            if (renders[i] == null) continue;
+            if (header != null && renders[i].transform.IsChildOf(header)) continue;
+            return renders[i].transform.rotation;
+        }
+        return holder.rotation;
+    }
+
+    static bool TryBounds(Transform space, Transform only, out Bounds local)
+    {
+        local = new Bounds(Vector3.zero, Vector3.zero);
+        bool any = false;
+        var renders = (only != null ? only : space).GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < renders.Length; i++)
+        {
+            var r = renders[i];
+            if (r == null) continue;
+            if (only == null && r.transform.name == "HS_DoorHeader") continue;
+            if (only == null && r.transform.IsChildOf(space) && HasHeaderParent(r.transform, space)) continue;
+            var ext = r.bounds.extents;
+            var c = r.bounds.center;
+            for (int k = 0; k < 8; k++)
+            {
+                var corner = c + Vector3.Scale(ext, new Vector3(
+                    (k & 1) == 0 ? -1f : 1f,
+                    (k & 2) == 0 ? -1f : 1f,
+                    (k & 4) == 0 ? -1f : 1f));
+                var p = space.InverseTransformPoint(corner);
+                if (!any) { local = new Bounds(p, Vector3.zero); any = true; }
+                else local.Encapsulate(p);
+            }
+        }
+        return any;
+    }
+
+    static bool HasHeaderParent(Transform t, Transform stop)
+    {
+        while (t != null && t != stop)
+        {
+            if (t.name == "HS_DoorHeader") return true;
+            t = t.parent;
+        }
+        return false;
     }
 
     public void Apply()
@@ -119,6 +226,27 @@ public class HSDoorsVisual
         return new Vector3(bound.HubX + 0.5f, bound.HubY, bound.HubZ + 0.5f) - Origin.position;
     }
 
+    static void PlaceLikeBlock(Transform model, BlockValue bv)
+    {
+        var shape = bv.Block != null ? bv.Block.shape : null;
+        var rot = shape != null ? shape.GetRotation(bv) : Quaternion.identity;
+        var entity = shape as BlockShapeModelEntity;
+        if (entity == null)
+        {
+            model.localPosition = new Vector3(0.5f, 0.5f, 0.5f);
+            model.localRotation = rot;
+            return;
+        }
+        var off = entity.GetRotatedOffset(bv.Block, rot);
+        off.x += 0.5f;
+        off.z += 0.5f;
+        model.localPosition = Vector3.zero;
+        model.localRotation = Quaternion.identity;
+        var visual = model.childCount > 0 ? model.GetChild(0) : model;
+        visual.localPosition = off;
+        visual.localRotation = rot;
+    }
+
     static void HideFocus(Transform model)
     {
         if (model == null) return;
@@ -136,6 +264,16 @@ public class HSDoorsVisual
 
     public void Destroy()
     {
+        for (int i = 0; i < headers.Count; i++)
+        {
+            var go = headers[i];
+            if (go == null) continue;
+            go.transform.SetParent(null, false);
+            go.transform.localScale = Vector3.one;
+            go.transform.localRotation = Quaternion.identity;
+            GameObjectPool.Instance.PoolObject(go);
+        }
+        headers.Clear();
         holders.Clear();
         cells.Clear();
         rest.Clear();

@@ -40,11 +40,21 @@ public static class HSDoorsNet
         }
     }
 
+    static Type pkgType;
+
+    static Type PackageType32()
+    {
+        return HSGameApi.NetPackageType32("NetPackageHSDoors", typeof(NetPackageHSDoorsCore));
+    }
+
     public static void RegisterPackage()
     {
         try
         {
-            var t = typeof(NetPackageHSDoors);
+            var t = HSGameVersion.Is33
+                ? HSGameApi.NetPackageType33("NetPackageHSDoors", typeof(NetPackageHSDoorsCore))
+                : PackageType32();
+            pkgType = t;
             var f = typeof(NetPackageManager).GetField("knownPackageTypes", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (f == null) return;
             var dict = f.GetValue(null) as IDictionary;
@@ -52,7 +62,9 @@ public static class HSDoorsNet
             var args = f.FieldType.GetGenericArguments();
             if (args != null && args.Length >= 1 && args[0] == typeof(string))
             {
-                if (!dict.Contains(t.Name)) dict[t.Name] = t;
+                // 3.3 must map the emitted type. A same-named entry from the
+                // assembly scan has no id for the instance we send.
+                if (HSGameVersion.Is33 || !dict.Contains(t.Name)) dict[t.Name] = t;
             }
             else if (args != null && args.Length >= 1 && args[0] == typeof(Type))
             {
@@ -67,9 +79,10 @@ public static class HSDoorsNet
         }
     }
 
-    static NetPackageHSDoors Pkg()
+    static NetPackageHSDoorsCore Pkg()
     {
-        return NetPackageManager.GetPackage<NetPackageHSDoors>();
+        if (pkgType == null) RegisterPackage();
+        return (NetPackageHSDoorsCore)HSGameApi.GetNetPackage(pkgType);
     }
 
     static void ToServer(NetPackage pkg)
@@ -95,7 +108,8 @@ public static class HSDoorsNet
     public static string SendSetup(string sub, string arg, EntityPlayerLocal player)
     {
         Vector3i aim = Vector3i.zero;
-        bool hasAim = HSDoorsSetup.AimedBlock(player, out aim) == null;
+        bool hasAim = sub == "select" && HSDoorsSetup.AimedDoor(player, out aim);
+        if (!hasAim) hasAim = HSDoorsSetup.AimedBlock(player, out aim) == null;
         ToServer(Pkg().SetupCmd(Setup, sub ?? "", arg ?? "", "", 0f, 0f, false, hasAim, aim));
         return null;
     }
@@ -183,21 +197,21 @@ public static class HSDoorsNet
     }
 }
 
-public class NetPackageHSDoors : NetPackage
+public abstract class NetPackageHSDoorsCore : NetPackage
 {
-    byte kind;
-    string text;
-    string arg;
-    string id;
-    float open;
-    float angle;
-    bool running;
-    bool hasPos;
-    Vector3i pos;
+    protected byte kind;
+    protected string text;
+    protected string arg;
+    protected string id;
+    protected float open;
+    protected float angle;
+    protected bool running;
+    protected bool hasPos;
+    protected Vector3i pos;
 
     public override NetPackageDirection PackageDirection { get { return NetPackageDirection.Both; } }
 
-    public NetPackageHSDoors SetupCmd(byte k, string t, string a, string i, float o, float ang, bool run, bool has, Vector3i p)
+    public NetPackageHSDoorsCore SetupCmd(byte k, string t, string a, string i, float o, float ang, bool run, bool has, Vector3i p)
     {
         kind = k;
         text = t ?? "";
@@ -282,10 +296,6 @@ public class NetPackageHSDoors : NetPackage
         }
     }
 
-    public override int GetLength()
-    {
-        return 48 + (text != null ? text.Length : 0) + (id != null ? id.Length : 0);
-    }
 }
 
 [HarmonyPatch(typeof(NetPackageManager), "SetupBaseMapping")]

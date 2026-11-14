@@ -1,0 +1,22 @@
+<configs>
+	<append xpath="/paints">
+		<paint id="245" name="txName_HSDoorsTarmac">
+			<property name="TextureId" value="512"/>
+			<property name="Group" value="txGroupMasonry"/>
+			<property name="PaintCost" value="1"/>
+			<property name="SortIndex" value="200"/>
+		</paint>
+		<paint id="247" name="txName_HSDoorsCladding">
+			<property name="TextureId" value="513"/>
+			<property name="Group" value="txGroupWallCovering"/>
+			<property name="PaintCost" value="1"/>
+			<property name="SortIndex" value="200"/>
+		</paint>
+		<paint id="248" name="txName_HSDoorsPillar">
+			<property name="TextureId" value="514"/>
+			<property name="Group" value="txGroupMasonry"/>
+			<property name="PaintCost" value="1"/>
+			<property name="SortIndex" value="200"/>
+		</paint>
+	</append>
+</configs>

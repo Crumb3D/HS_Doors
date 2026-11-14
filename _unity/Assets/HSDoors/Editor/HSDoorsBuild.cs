@@ -119,29 +119,57 @@ public static class HSDoorsBuild
         return b;
     }
 
-    // COL_* children become box colliders; everything else gets the HS materials by slot name.
+    // Hits register as the block only if T_Block + the collider sit on the ROOT.
+    // Child meshes tagged T_Block play a hit sound ("ting") and eat the shot without damaging the voxel.
     static int Process(GameObject go, Dictionary<string, Material> mats)
     {
-        int cols = 0;
         go.tag = BlockTag;
-        go.layer = 0;
+        go.layer = 16;
+        // FBX import mirrors X, so the 2-wide housing lands on -X. Slide it onto +X (the next cell).
+        if (go.name == "HSSlideHeader2")
+        {
+            float minX = 0f;
+            bool any = false;
+            foreach (var r in go.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!any || r.bounds.min.x < minX) minX = r.bounds.min.x;
+                any = true;
+            }
+            if (any && minX < -0.01f)
+            {
+                var shift = new Vector3(-minX, 0f, 0f);
+                foreach (Transform t in go.transform)
+                    t.localPosition += shift;
+            }
+        }
+
+        var combined = new Bounds(Vector3.zero, Vector3.one);
+        bool anyCol = false;
+        var colObjs = new List<GameObject>();
+
         foreach (var t in go.GetComponentsInChildren<Transform>(true))
         {
-            t.gameObject.layer = 0;
+            t.gameObject.layer = 16;
+            if (t != go.transform) t.gameObject.tag = "Untagged";
+
             if (t.name.StartsWith("COL_", StringComparison.OrdinalIgnoreCase))
             {
                 var mf = t.GetComponent<MeshFilter>();
-                var bounds = mf != null && mf.sharedMesh != null ? mf.sharedMesh.bounds : new Bounds(Vector3.zero, Vector3.one);
-                var r = t.GetComponent<MeshRenderer>();
-                if (r != null) UnityEngine.Object.DestroyImmediate(r);
-                if (mf != null) UnityEngine.Object.DestroyImmediate(mf);
-                var bc = t.gameObject.AddComponent<BoxCollider>();
-                bc.center = bounds.center;
-                bc.size = bounds.size;
-                t.gameObject.tag = BlockTag;
-                cols++;
+                var mb = mf != null && mf.sharedMesh != null ? mf.sharedMesh.bounds : new Bounds(Vector3.zero, Vector3.one);
+                for (int i = 0; i < 8; i++)
+                {
+                    var lp = mb.center + Vector3.Scale(mb.extents, new Vector3(
+                        (i & 1) == 0 ? -1f : 1f,
+                        (i & 2) == 0 ? -1f : 1f,
+                        (i & 4) == 0 ? -1f : 1f));
+                    var rootLocal = go.transform.InverseTransformPoint(t.TransformPoint(lp));
+                    if (!anyCol) { combined = new Bounds(rootLocal, Vector3.zero); anyCol = true; }
+                    else combined.Encapsulate(rootLocal);
+                }
+                colObjs.Add(t.gameObject);
                 continue;
             }
+
             var mr = t.GetComponent<MeshRenderer>();
             if (mr == null) continue;
             var shared = mr.sharedMaterials;
@@ -155,9 +183,31 @@ public static class HSDoorsBuild
             mr.sharedMaterials = shared;
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             mr.receiveShadows = true;
-            t.gameObject.tag = BlockTag;
         }
-        return cols;
+
+        for (int i = 0; i < colObjs.Count; i++)
+            UnityEngine.Object.DestroyImmediate(colObjs[i]);
+
+        var existing = go.GetComponents<BoxCollider>();
+        for (int i = 0; i < existing.Length; i++)
+            UnityEngine.Object.DestroyImmediate(existing[i]);
+        var bc = go.AddComponent<BoxCollider>();
+        if (!anyCol)
+        {
+            bc.center = new Vector3(0f, 0.5f, 0f);
+            bc.size = Vector3.one;
+        }
+        else
+        {
+            bc.center = combined.center;
+            var sz = combined.size;
+            if (sz.x < 0.2f) sz.x = 0.2f;
+            if (sz.y < 0.2f) sz.y = 0.2f;
+            if (sz.z < 0.2f) sz.z = 0.2f;
+            bc.size = sz;
+        }
+        bc.isTrigger = false;
+        return 1;
     }
 
     static string CleanName(string n)

@@ -10,6 +10,8 @@ public class HSDoorsMod : IModApi
 
     public void InitMod(Mod _modInstance)
     {
+        if (!HSGameVersion.AllowLoad("[HSDoors]"))
+            return;
         ModPath = _modInstance.Path;
         try
         {
@@ -22,7 +24,7 @@ public class HSDoorsMod : IModApi
         {
             HSDoorsDebug.Error("Could not set up HSDoors save folder", e);
         }
-        HSDoorsDebug.Info("Init v1.0.0; setup tool hold E; admin: hsdoors");
+        HSDoorsDebug.Info("Init v1.0.2; setup tool hold E; admin: hsdoors");
         HSDoorsNet.RegisterPackage();
         ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
         ModEvents.WorldShuttingDown.RegisterHandler(OnWorldShuttingDown);

@@ -76,7 +76,7 @@ for a in (0, 90, 180, 270):
         names.append(place("HSLeafFramedDark", ax + d, a))
 names.append(place("HSDrumSide5mFramed", ax + Vector((3, 0, 0)), 0))
 names.append(place("HSDrumSide5mFramed", ax + Vector((-3, 0, 0)), 180))
-names.append(place("HSCanopy5m", ax + Vector((0, 0, 3))))
+names.append(place("HSCanopy5m", ax + Vector((0, 0, 2))))
 names.append(place("HSFloorMat5m", ax + Vector((0, 0, -1))))
 only(set(names))
 shot("preview_revolving", ax + Vector((0, 0, 1.6)), 11, -35, 18, 30)
@@ -86,7 +86,7 @@ sx = Vector((80, 0, 0))
 names = []
 for i in range(4):
     names.append(place("HSLeafFramedSilver", sx + Vector((i - 1.5, 0, 0)), 0))
-    names.append(place("HSSlideHeaderSensor" if i in (1, 2) else ("HSSlideHeaderEnd" if i == 3 else "HSSlideHeader"), sx + Vector((i - 1.5, 0, 3)), 0))
+    names.append(place("HSSlideHeaderSensor" if i in (1, 2) else ("HSSlideHeaderEnd" if i == 3 else "HSSlideHeader"), sx + Vector((i - 1.5, 0, 2)), 0))
 only(set(names))
 shot("preview_sliding", sx + Vector((0, 0, 1.7)), 8, -70, 12, 30)
 

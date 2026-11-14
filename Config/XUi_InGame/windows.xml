@@ -1,0 +1,10 @@
+<configs>
+	<append xpath="/windows">
+		<window name="HUDHSDoors" pos="-620,180" width="600" height="320" anchor="Right" depth="15" controller="HSDoorsHud, HSDoors">
+			<rect width="600" height="320" visible="{show}">
+				<sprite depth="1" pos="0,0" width="600" height="320" sprite="menu_empty" color="0,0,0,160" type="sliced"/>
+				<label depth="2" pos="12,-10" width="576" height="300" font_size="22" justify="left" upper_case="false" color="255,255,255,235" text="{info}"/>
+			</rect>
+		</window>
+	</append>
+</configs>

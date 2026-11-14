@@ -25,7 +25,7 @@ public class HSDoorsConfigData
     public int HubX, HubY, HubZ;
     public bool HasHub;
     public float Radius = 1.5f;
-    public int Height = 3;
+    public int Height = 2;
     public int OriginX, OriginY, OriginZ;
     public int SizeX = 1, SizeY = 1, SizeZ = 1;
     public int Axis; // 0 = X, 2 = Z
@@ -131,6 +131,51 @@ public class HSDoorsConfigData
         if (y < OriginY || y >= OriginY + SizeY) return false;
         if (z < OriginZ || z >= OriginZ + SizeZ) return false;
         return true;
+    }
+
+    // Captured leaves are air in the world, and a 2-block door only stores the
+    // bottom cell. The crosshair is on the mesh, so match that volume too.
+    public bool Occupies(int x, int y, int z)
+    {
+        if (HasPanel && PanelX == x && PanelY == y && PanelZ == z) return true;
+        if (Captured && Cells != null)
+        {
+            for (int i = 0; i < Cells.Count; i++)
+            {
+                var c = Cells[i];
+                if (c == null) continue;
+                var off = IsSlide ? HSDoorsSliding.LeafOffset(this, c) : Vector3.zero;
+                float bx = OriginX + c.Dx + off.x;
+                float by = OriginY + c.Dy + off.y;
+                float bz = OriginZ + c.Dz + off.z;
+                if (CoversCell(x, y, z, bx, by, bz)) return true;
+                var bv = HSDoorsConfig.BlockOf(c);
+                if (bv.Block == null || !bv.Block.isMultiBlock || bv.Block.multiBlockPos == null) continue;
+                try
+                {
+                    int n = bv.Block.multiBlockPos.Length;
+                    for (int k = 0; k < n; k++)
+                    {
+                        var rel = bv.Block.multiBlockPos.Get(k, bv.type, bv.rotation);
+                        if (CoversCell(x, y, z, bx + rel.x, by + rel.y, bz + rel.z)) return true;
+                    }
+                }
+                catch { }
+            }
+        }
+        if (IsSlide && InFootprint(x, y, z)) return true;
+        return !IsSlide && HasHub && InCylinder(x, y, z);
+    }
+
+    static bool CoversCell(int x, int y, int z, float wx, float wy, float wz)
+    {
+        int x0 = Mathf.FloorToInt(wx);
+        int y0 = Mathf.FloorToInt(wy);
+        int z0 = Mathf.FloorToInt(wz);
+        int x1 = Mathf.FloorToInt(wx + 0.999f);
+        int y1 = Mathf.FloorToInt(wy + 0.999f);
+        int z1 = Mathf.FloorToInt(wz + 0.999f);
+        return x >= x0 && x <= x1 && y >= y0 && y <= y1 && z >= z0 && z <= z1;
     }
 
     public bool InCylinder(int x, int y, int z)
@@ -311,8 +356,8 @@ public static class HSDoorsConfig
         if (d.Axis != 0 && d.Axis != 2) d.Axis = 0;
         if (d.AxisSign == 0) d.AxisSign = 1;
         if (d.Wings < 2) d.Wings = 4;
-        if (d.Height < 1) d.Height = 3;
-        if (d.HoldOpen < 0f) d.HoldOpen = 2f;
+        if (d.Height < 1) d.Height = 2;
+        if (d.HoldOpen < 0.25f) d.HoldOpen = 2f;
         if (string.IsNullOrEmpty(d.LockMode)) d.LockMode = "unlocked";
         if (string.IsNullOrEmpty(d.Unpowered)) d.Unpowered = "closed";
         d.CrushDps = HSDoorsSettings.ClampCrush(d.CrushDps);
@@ -386,13 +431,8 @@ public static class HSDoorsConfig
 
     public static HSDoorsConfigData At(Vector3i pos)
     {
-        var panel = PanelOwner(pos);
-        if (panel != null) return panel;
         foreach (var d in Doors)
-        {
-            if (d.IsSlide && d.InFootprint(pos.x, pos.y, pos.z)) return d;
-            if (!d.IsSlide && d.HasHub && d.InCylinder(pos.x, pos.y, pos.z)) return d;
-        }
+            if (d != null && d.Occupies(pos.x, pos.y, pos.z)) return d;
         return null;
     }
 
@@ -433,6 +473,58 @@ public static class HSDoorsConfig
     public static string Summary()
     {
         return Summary(Data);
+    }
+
+    public static string HoldingHud()
+    {
+        int total = Doors != null ? Doors.Count : 0;
+        var d = Data;
+        if (d == null) return "Active Door: none - Total Doors: " + total;
+        string leaves;
+        if (d.IsSlide)
+        {
+            int corners = (d.Corner1 != null ? 1 : 0) + (d.Corner2 != null ? 1 : 0);
+            leaves = d.Captured
+                ? "captured, " + (d.Cells != null ? d.Cells.Count : 0) + " blocks, " + d.SizeX + "x" + d.SizeY + "x" + d.SizeZ
+                : corners + " of 2 corners";
+        }
+        else
+        {
+            leaves = d.HasHub
+                ? "hub set, radius " + d.Radius.ToString("0.0") + ", height " + d.Height + (d.Captured ? ", captured" : "")
+                : "hub not set";
+        }
+        string panel = d.HasPanel ? "registered" : "not registered";
+        string powerProblem;
+        bool powered = HSDoorsPower.IsPanelPowered(d, out powerProblem);
+        string power = powered ? "Powered" : (string.IsNullOrEmpty(powerProblem) ? "No" : powerProblem);
+        if (power.Length > 72) power = power.Substring(0, 69) + "...";
+        string state;
+        if (!string.IsNullOrEmpty(d.StopReason)) state = "Stopped: " + d.StopReason;
+        else if (!d.Captured) state = "Not captured";
+        else if (!d.WantedOn) state = "Disabled";
+        else if (d.Open >= 0.98f) state = "Open";
+        else if (d.Open <= 0.02f) state = "Closed";
+        else state = "Moving";
+        if (state.Length > 72) state = state.Substring(0, 69) + "...";
+        var needing = new List<string>();
+        if (Doors != null)
+        {
+            foreach (var door in Doors)
+                if (door != null && !door.HasPanel) needing.Add(door.DoorId);
+        }
+        string need = needing.Count == 0 ? "none" : string.Join(", ", needing.ToArray());
+        string sensor = d.SensorFilter == 1 ? "players" : d.SensorFilter == 2 ? "zombies" : d.SensorFilter == 3 ? "nobody" : "everyone";
+        string dead = d.Unpowered == "open" ? "open" : d.Unpowered == "stay" ? "stay" : "close";
+        return "Active Door: " + d.DoorId + " - Total Doors: " + total
+            + "\nType: " + (d.IsSlide ? "Sliding" : "Revolving") + ", " + d.Mode
+            + "\nLeaves: " + leaves
+            + "\nPanel: " + panel
+            + "\nPower: " + power
+            + "\nOpen: " + Mathf.RoundToInt(d.Open * 100f) + "%   State: " + state
+            + "\nLock: " + (string.IsNullOrEmpty(d.LockMode) ? "unlocked" : d.LockMode) + "   Sensor: " + sensor
+            + "\nIf power dies: " + dead
+            + "\nDoors needing a panel: " + need;
     }
 
     public static int TexChannels

@@ -79,6 +79,8 @@ public static class HSDoorsSetup
             case "select":
             {
                 Vector3i p;
+                if (!HasForcedAim && AimedDoor(player, out p))
+                    return HSDoorsConfig.SelectNearest(p);
                 var err = AimedBlock(player, out p);
                 if (err != null) return err;
                 return HSDoorsConfig.SelectNearest(p);
@@ -210,7 +212,8 @@ public static class HSDoorsSetup
         if (ctrl != null) ctrl.RebuildVisual();
         HSDoorsConfig.Save();
         return "Sliding " + d.SizeX + "x" + d.SizeY + "x" + d.SizeZ + " " + d.Mode
-            + (d.HasPanel ? " ready." : ". Register the Panel.");
+            + (d.HasPanel ? " ready." : ". Register the Panel.")
+            + " Header is on top of the leaves.";
     }
 
     static string FinishRevolve(World world, HSDoorsConfigData d)
@@ -236,19 +239,23 @@ public static class HSDoorsSetup
         Vector3i p;
         var err = AimedBlock(player, out p);
         if (err != null) return err;
-        BindAimed(p);
         d = HSDoorsConfig.Data;
         var world = GameManager.Instance.World;
         var bv = world.GetBlock(p);
         p = HSDoorsCapture.ParentPos(p, bv);
         if (!(world.GetBlock(p).Block is BlockHSDoorsPanel))
             return "Aim at an HS Door Panel. That block is " + HSDoorsConfig.DisplayName(bv) + ".";
+        foreach (var other in HSDoorsConfig.Doors)
+        {
+            if (other == null || other == d) continue;
+            if (other.IsPanel(p)) other.ClearPanel();
+        }
         d.SetPanel(p);
         d.StopReason = null;
         HSDoorsConfig.Save();
         string power;
         bool on = HSDoorsPower.IsPanelPowered(d, out power);
-        return "Panel registered at " + p + ". " + (on ? "Powered." : power);
+        return "Panel registered to " + d.DoorId + " at " + p + ". " + (on ? "Powered." : power);
     }
 
     static string Exclude(EntityPlayerLocal player)
@@ -285,6 +292,15 @@ public static class HSDoorsSetup
     {
         var d = HSDoorsConfig.At(p);
         if (d != null) HSDoorsConfig.Use(d);
+    }
+
+    public static bool AimedDoor(EntityPlayerLocal player, out Vector3i pos)
+    {
+        pos = Vector3i.zero;
+        var world = GameManager.Instance != null ? GameManager.Instance.World : null;
+        if (player == null && world != null) player = world.GetPrimaryPlayer();
+        var hit = player != null ? player.HitInfo : null;
+        return ItemActionHSDoorsTool.TryAimedDoor(world, hit, player, out pos);
     }
 
     public static string AimedBlock(EntityPlayerLocal player, out Vector3i pos)

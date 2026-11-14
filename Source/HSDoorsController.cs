@@ -10,8 +10,10 @@ public class HSDoorsController : MonoBehaviour
     static readonly List<HSDoorsController> all = new List<HSDoorsController>();
 
     const float PowerCheckInterval = 0.25f;
-    const float SensorInterval = 0.12f;
+    const float SensorInterval = 0.08f;
     const float StateInterval = 0.35f;
+    const float MovingStateInterval = 0.05f;
+    const float MinHoldAfterClear = 0.4f;
 
     float nextPower;
     float nextSensor;
@@ -20,6 +22,7 @@ public class HSDoorsController : MonoBehaviour
     float wantOpen; // 0 or 1 for slide; unused for revolve
     bool visualReady;
     bool closing;
+    int slideSoundDir;
 
     static HSDoorsConfigData D { get { return HSDoorsConfig.Data; } }
 
@@ -59,11 +62,6 @@ public class HSDoorsController : MonoBehaviour
             c.visual.Destroy();
         }
         if (HSDoorsNet.IsAuthority) HSDoorsConfig.Save();
-    }
-
-    void PushCfg()
-    {
-        if (Bound != null) HSDoorsConfig.Use(Bound);
     }
 
     public string StatusText()
@@ -146,7 +144,7 @@ public class HSDoorsController : MonoBehaviour
         {
             Bound.Unpowered = Bound.Unpowered == "closed" ? "open" : (Bound.Unpowered == "open" ? "stay" : "closed");
             HSDoorsConfig.Save();
-            return "Unpowered: fail " + Bound.Unpowered + ".";
+            return "If the power dies, " + Bound.DoorId + " will " + UnpoweredWords(Bound.Unpowered) + ".";
         }
         if (cmd == "mode")
         {
@@ -157,6 +155,13 @@ public class HSDoorsController : MonoBehaviour
             return Bound.DoorId + " mode " + Bound.Mode + ".";
         }
         return "Unknown panel command.";
+    }
+
+    static string UnpoweredWords(string mode)
+    {
+        if (mode == "open") return "open";
+        if (mode == "stay") return "stay where it is";
+        return "close";
     }
 
     static string NextLock(string cur)
@@ -194,10 +199,13 @@ public class HSDoorsController : MonoBehaviour
     public void ApplyRemoteState(float open, float angle, bool running, string reason)
     {
         if (Bound == null) return;
+        float prevOpen = Bound.Open;
         Bound.Open = open;
         Bound.Angle = angle;
         Bound.Running = running;
         Bound.StopReason = reason;
+        wantOpen = open;
+        NoteSlide(prevOpen);
     }
 
     public void RebuildVisual()
@@ -216,7 +224,6 @@ public class HSDoorsController : MonoBehaviour
     void Tick()
     {
         if (Bound == null) return;
-        PushCfg();
         visual.Bind(Bound);
         var world = GameManager.Instance != null ? GameManager.Instance.World : null;
         if (world == null) return;
@@ -254,14 +261,14 @@ public class HSDoorsController : MonoBehaviour
                 TickSensor(world);
             }
             StepMotion(Time.deltaTime, world);
-            if (Time.unscaledTime >= nextState)
+            NoteSlide(prevOpen);
+            bool moved = Mathf.Abs(Bound.Open - prevOpen) > 0.0001f || Mathf.Abs(Bound.Angle - prevAngle) > 0.001f;
+            if (moved || Time.unscaledTime >= nextState)
             {
-                nextState = Time.unscaledTime + StateInterval;
+                nextState = Time.unscaledTime + (moved ? MovingStateInterval : StateInterval);
                 HSDoorsNet.BroadcastState(Bound);
             }
         }
-        else
-            StepMotion(Time.deltaTime, world);
 
         visual.Apply();
         HSDoorsPush.Tick(world, Bound, Bound.Open - prevOpen, Bound.Angle - prevAngle, Time.deltaTime);
@@ -295,24 +302,17 @@ public class HSDoorsController : MonoBehaviour
         bool occ = HSDoorsSensor.Occupied(world, Bound);
         if (Bound.IsSlide)
         {
-            if (occ)
+            bool inWay = Bound.SafetyReverse && HSDoorsSensor.InOpening(world, Bound);
+            if (occ || inWay)
             {
                 wantOpen = 1f;
-                holdUntil = Time.unscaledTime + Bound.HoldOpen;
+                holdUntil = Time.unscaledTime + HoldAfterClear();
                 closing = false;
             }
             else if (Time.unscaledTime >= holdUntil)
             {
-                if (Bound.SafetyReverse && HSDoorsSensor.InOpening(world, Bound))
-                {
-                    wantOpen = 1f;
-                    holdUntil = Time.unscaledTime + Bound.HoldOpen;
-                }
-                else
-                {
-                    wantOpen = 0f;
-                    closing = true;
-                }
+                wantOpen = 0f;
+                closing = true;
             }
         }
         else
@@ -322,10 +322,37 @@ public class HSDoorsController : MonoBehaviour
         }
     }
 
+    float HoldAfterClear()
+    {
+        return Mathf.Max(MinHoldAfterClear, Bound.HoldOpen);
+    }
+
     static Vector3 PrimaryFeet(World world)
     {
         var p = world.GetPrimaryPlayer();
         return p != null ? p.position : Vector3.zero;
+    }
+
+    // One whoosh when a slide starts opening or closing. Remote clients hear it
+    // from ApplyRemoteState; the host hears it from the motion step. A dedicated
+    // server has no listener.
+    void NoteSlide(float prevOpen)
+    {
+        if (GameManager.IsDedicatedServer || Bound == null || !Bound.IsSlide) return;
+        float delta = Bound.Open - prevOpen;
+        if (Mathf.Abs(delta) < 0.002f)
+        {
+            slideSoundDir = 0;
+            return;
+        }
+        int dir = delta > 0f ? 1 : -1;
+        if (dir == slideSoundDir) return;
+        slideSoundDir = dir;
+        var pos = new Vector3(
+            Bound.OriginX + Bound.SizeX * 0.5f,
+            Bound.OriginY + Mathf.Max(1f, Bound.Height * 0.5f),
+            Bound.OriginZ + Bound.SizeZ * 0.5f);
+        Audio.Manager.Play(pos, dir > 0 ? "door_glass_sliding_open" : "door_glass_sliding_close");
     }
 
     void StepMotion(float dt, World world)

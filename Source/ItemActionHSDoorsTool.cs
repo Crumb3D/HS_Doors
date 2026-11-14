@@ -27,6 +27,26 @@ public class ItemActionHSDoorsTool : ItemAction
         return TryAimedBuild(GameManager.Instance != null ? GameManager.Instance.World : null, hit, player, out pos);
     }
 
+    public static bool TryAimedDoor(World world, WorldRayHitInfo hit, EntityPlayerLocal player, out Vector3i pos)
+    {
+        pos = Vector3i.zero;
+        if (world == null) return false;
+        Ray ray;
+        if (!TryLookRay(hit, player, out ray)) return false;
+        var last = new Vector3i(int.MinValue, 0, 0);
+        for (float t = 0.15f; t <= 12f; t += 0.15f)
+        {
+            var p = ray.origin + ray.direction * t;
+            var vi = new Vector3i(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.y), Mathf.FloorToInt(p.z));
+            if (vi.x == last.x && vi.y == last.y && vi.z == last.z) continue;
+            last = vi;
+            if (HSDoorsConfig.At(vi) == null) continue;
+            pos = vi;
+            return true;
+        }
+        return false;
+    }
+
     public static bool TryAimedBuild(World world, WorldRayHitInfo hit, EntityPlayerLocal player, out Vector3i pos)
     {
         pos = Vector3i.zero;
